@@ -1,0 +1,27 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { getCollection } from "astro:content";
+
+const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<DocsLayout title="Documentation" description="Source-grounded setup, architecture, agent, contract, and security notes for the WallStreet repository.">
+  <div class="docs-index">
+    <p class="article-deck">A compact guide to the repository as it exists—not a promise that every package is wired into one running system.</p>
+    <ol class="docs-index__list">
+      {docs.map((entry, index) => (
+        <li>
+          <a href={`/docs/${entry.id}`}>
+            <span class="docs-index__number">0{index + 1}</span>
+            <span class="docs-index__copy"><strong>{entry.data.navLabel}</strong><span>{entry.data.description}</span></span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+    <div class="docs-index__note">
+      <p><strong>Scope note.</strong> Website preview and build commands stay in <code>website/</code>. The existing React, API, Python, task-gateway, and contract packages have separate manifests. No root-level command is presented as a verified all-in-one launch.</p>
+      <a class="text-link" href="/engineering">Open the source map</a>
+    </div>
+  </div>
+</DocsLayout>

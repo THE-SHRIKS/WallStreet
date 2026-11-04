@@ -1,0 +1,16 @@
+---
+import { sourceHref } from "../data/project-facts";
+
+interface Props {
+  path: string;
+  label?: string;
+  kind?: "blob" | "tree";
+}
+
+const { path, label, kind = "blob" } = Astro.props;
+---
+
+<a class="source-link" href={sourceHref(path, kind)} target="_blank" rel="noreferrer" aria-label={`View source file ${path} on GitHub`}>
+  <span class="source-link__mark" aria-hidden="true">↗</span>
+  <span>{label ?? path}</span>
+</a>

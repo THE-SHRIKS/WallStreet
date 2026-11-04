@@ -1,0 +1,51 @@
+---
+title: "A simulated success is not settlement"
+description: "How to read the repository’s simulated transfer and execution paths without mistaking a UI state, model result, or mock contract call for an on-chain transaction."
+category: "Design decisions"
+order: 2
+motif: "threshold"
+tags:
+  - simulation
+  - smart contracts
+toc:
+  - id: the-success-state
+    label: The success state
+  - id: three-layers-of-evidence
+    label: Three layers of evidence
+  - id: what-a-public-demo-should-say
+    label: What a public demo should say
+  - id: why-this-is-design-work
+    label: Why this is design work
+---
+
+<p class="article-deck">In a financial interface, “success” is a consequential word. A UI transition, a simulated method, and a settled transaction are three different events.</p>
+
+<h2 id="the-success-state">The success state</h2>
+
+The repository’s cross-chain page contains a simulated transfer-complete state. The Python rebalancer similarly labels its execution path as a simulation. Several contract files also include mock-oriented logic. Those are useful tools for exploring a product flow and documenting an intended boundary. They are not evidence that a token moved.
+
+A browser can display a green check after a local timer, a mocked API response, or a component state change. That state proves only that the interface reached its success branch. Without an external transaction identifier and a confirmed network receipt, it does not prove that the network accepted or finalized anything.
+
+<h2 id="three-layers-of-evidence">Three layers of evidence</h2>
+
+**Presentation evidence** is what the page renders: a button, progress state, toast, or completion message. It is useful for reviewing interface behavior. It should carry a label such as “simulation” whenever the result is not backed by a live operation.
+
+**Application evidence** is what the service returns: a request identifier, a structured response, and an explicit status from the system that owns the operation. This still does not prove a blockchain transaction unless the response is tied to the network and its receipt.
+
+**Settlement evidence** comes from the relevant chain and contract context. A public claim about a completed transaction should be traceable to the intended network, contract, transaction, and receipt, and should be independently reviewable. A deployed address alone does not establish that the expected bytecode or behavior is present; a receipt alone does not establish that the action was safe or profitable.
+
+The reviewed project does not publish a verified production deployment or contract address through this site. For that reason, the public pages do not simulate a wallet connection, show a fabricated transaction hash, or claim settlement.
+
+<h2 id="what-a-public-demo-should-say">What a public demo should say</h2>
+
+A demo can still be useful when its scope is explicit. It can say “illustrative route,” show the stage that a system would review, and state whether the state is generated locally. It can make a button’s effect observable without suggesting that an asset was sent. It can distinguish current data from sample data, and list the evidence a live integration would need before showing a real completion state.
+
+For this site, the route comparison reveals a schematic difference, the risk slider moves a local number across source-defined markers, and the allocation control switches between two drawn patterns. None of these controls reads account data, sends a request, connects a wallet, stores a profile, or submits a transaction. Their statuses are visible before and after interaction.
+
+<h2 id="why-this-is-design-work">Why this is design work</h2>
+
+Trust is shaped by the interface as much as by the service. A success message that outruns its evidence teaches visitors to ignore labels. A boundary that appears next to the control lets them understand exactly what happened. This is especially important when a project combines agent language, finance, and smart-contract prototypes: those fields already invite readers to assume autonomy and settlement.
+
+Calling a simulation a simulation does not diminish the engineering work. It makes the next milestone measurable. The team can later replace a local state with a verified integration, then present the external evidence that belongs to that integration. Until then, the honest state is an explanatory prototype.
+
+<p class="article-source-note">Source anchors: <code>LokiAi/src/pages/CrossChain.tsx</code>, <code>portfolio_rebalancer/rebalance_engine.py</code>, and the four Solidity files under <code>loki-contracts/contracts/</code>.</p>

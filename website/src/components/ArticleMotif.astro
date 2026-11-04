@@ -1,0 +1,19 @@
+---
+import AgentGlyph from "./AgentGlyph.astro";
+
+interface Props {
+  motif: "network" | "threshold" | "ledger";
+  label: string;
+}
+
+const { motif, label } = Astro.props;
+const symbol = motif === "network" ? "junction" : motif === "threshold" ? "barrier" : "ledger";
+---
+
+<div class:list={["article-motif", `article-motif--${motif}`]} role="img" aria-label={label}>
+  <div class="article-motif__glyph"><AgentGlyph symbol={symbol} size={74} /></div>
+  <div class="article-motif__track" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <span class="article-motif__note">Source-led note · not a live system</span>
+</div>

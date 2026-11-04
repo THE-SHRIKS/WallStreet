@@ -1,0 +1,81 @@
+---
+title: "Getting started"
+description: "Run the website in isolation, then use the existing frontend, backend, or contract package’s own manifest without starting a guessed all-in-one stack."
+navLabel: "Getting started"
+order: 1
+toc:
+  - id: prerequisites
+    label: Prerequisites
+  - id: run-the-website
+    label: Run the website
+  - id: existing-project-packages
+    label: Existing project packages
+  - id: boundaries-before-running
+    label: Boundaries before running
+---
+
+<p class="article-deck">The website is a separate, static Astro package. It does not start the existing app, API, Python services, task broker, or contracts.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+For this website, use Node.js <code>22.23.4</code> or newer and npm <code>9.6.5</code> or newer. Those minimums are declared in <code>website/package.json</code>. The package has its own lockfile and needs no API key, database, wallet, or external service to preview.
+
+The existing packages do not all declare the same Node engine requirement. Use a current supported Node LTS release and check the relevant package’s <code>engines</code> field before changing its dependency tree. The examples below are copied from each package’s declared script names; they are not a verified end-to-end launch recipe.
+
+<h2 id="run-the-website">Run the website</h2>
+
+Install and start from the website directory:
+
+```sh
+cd website
+npm ci
+npm run dev
+```
+
+The local preview is served at <code>http://localhost:4321</code>. The website’s own checks are:
+
+```sh
+npm run check
+npm test
+npm run build
+```
+
+The build is static. If you deploy it under a real public origin, set <code>SITE_URL</code> to that origin at build time so canonical links and the sitemap use the actual host. No production domain is assumed by the repository.
+
+<h2 id="existing-project-packages">Existing project packages</h2>
+
+**React/Vite frontend** — the <code>LokiAi/package.json</code> manifest declares <code>dev: vite</code>:
+
+```sh
+cd LokiAi
+npm install
+npm run dev
+```
+
+Vite uses <code>http://localhost:5173</code> by default. This starts the browser package only; it does not establish that API, market-data, or wallet connections work.
+
+**Node API** — <code>LokiAi/backend/package.json</code> declares <code>dev: node --watch server.js</code>:
+
+```sh
+cd LokiAi/backend
+npm install
+npm run dev
+```
+
+The backend may require private local configuration and dependent services. Configure those privately before starting it; do not copy repository values, secrets, or sensitive sample data into documentation, screenshots, or public reports. This guide does not print environment values or claim a database connection.
+
+**Solidity contracts** — <code>loki-contracts/package.json</code> declares a local Hardhat compile command:
+
+```sh
+cd loki-contracts
+npm install
+npm run compile
+```
+
+This compiles the local contract package. It does not deploy to a public network, prove an audit, or establish that a contract address is live.
+
+<h2 id="boundaries-before-running">Boundaries before running</h2>
+
+The repository contains multiple service and Compose paths. No single, safe, end-to-end startup command was verified for this site review, so the website does not run one automatically. Start only the package you intend to inspect and verify its environment and dependencies separately.
+
+Do not treat a UI success state, a simulated rebalancer result, a model output, or a local contract test as a settled financial transaction. For the current source snapshot and limitations, read the [architecture notes](/docs/architecture), [agent guide](/docs/agents), and [security boundaries](/docs/security-and-limitations).

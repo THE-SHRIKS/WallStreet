@@ -1,0 +1,47 @@
+---
+import PixelMark from "./PixelMark.astro";
+import { PRIMARY_NAVIGATION } from "../data/site";
+import { REPOSITORY_URL } from "../data/project-facts";
+
+interface Props {
+  active?: string;
+}
+
+const { active } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+const activePath = active === "home" ? "/" : active ? `/${active}` : currentPath;
+---
+
+<header class="site-header" data-site-header>
+  <div class="site-header__inner wrap">
+    <PixelMark current={activePath === "/"} />
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open site navigation"
+      aria-controls="site-navigation"
+      aria-expanded="false"
+      data-menu-toggle
+    >
+      <span class="menu-toggle__label">Menu</span>
+      <span class="menu-toggle__icon" aria-hidden="true"><i></i><i></i></span>
+    </button>
+
+    <nav class="site-navigation" id="site-navigation" aria-label="Main navigation" data-site-navigation>
+      {PRIMARY_NAVIGATION.map((item) => {
+        const isCurrent = activePath === item.href || (item.href !== "/" && activePath.startsWith(`${item.href}/`));
+        return (
+          <a href={item.href} aria-current={isCurrent ? "page" : undefined}>
+            <span>{item.label}</span>
+          </a>
+        );
+      })}
+    </nav>
+
+    <a class="header-source" href={REPOSITORY_URL} target="_blank" rel="noreferrer">
+      <span>GitHub</span>
+      <span class="header-source__arrow" aria-hidden="true">↗</span>
+    </a>
+  </div>
+</header>

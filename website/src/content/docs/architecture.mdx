@@ -1,0 +1,47 @@
+---
+title: "Architecture map"
+description: "How the repository’s React app, Node API, task gateway, Python workflow, contracts, and identity experiment are separated—and where integration remains unverified."
+navLabel: "Architecture"
+order: 2
+toc:
+  - id: repository-shape
+    label: Repository shape
+  - id: two-source-paths
+    label: Two source paths
+  - id: reading-the-map
+    label: Reading the map
+  - id: package-boundaries
+    label: Package boundaries
+---
+
+<p class="article-deck">The map on the [Engineering page](/engineering#architecture) is a source navigation tool. It is not a deployment diagram or a claim that all services start together.</p>
+
+<h2 id="repository-shape">Repository shape</h2>
+
+The reviewed tree has a React/TypeScript/Vite application under <code>LokiAi/</code>, a separately packaged Node/Express API under <code>LokiAi/backend/</code>, and a frontend agent-orchestration module. MongoDB-oriented client/model paths and Socket.IO server setup are also present, but their external connection and deployed data path were not verified. Python components live in their own directories: <code>portfolio_rebalancer/</code> contains the simulated allocation workflow, while <code>task_gateway/</code> contains a FastAPI/Celery service. The Solidity sources and Hardhat scripts are under <code>loki-contracts/</code>. A keystroke/voice identity experiment is documented in a separate Ghost Key directory.
+
+The root README describes a broader, evolving stack, including a Rust-oriented backend and PostgreSQL migrations. The nested package manifests show current Node and Python entrypoints as well. Read the manifest and entrypoint for the package you plan to use; do not infer the active runtime from a folder name or an older summary.
+
+<h2 id="two-source-paths">Two source paths</h2>
+
+**Interface to service-shaped code:** the React app contains portfolio, agent, and cross-chain views. The repository also defines an agent orchestrator and an Express server. The source map relates those files for inspection, but this review did not start a complete production stack or verify every request across the boundary. Some displayed states are explicitly simulated.
+
+**Rebalance proposal to execution boundary:** the Python engine compares allocation state and describes a simulated trade path. A related Solidity contract file exists, but the Python simulation is not evidence that the contract was called, that a bridge transferred an asset, or that a transaction settled.
+
+<h2 id="reading-the-map">Reading the map</h2>
+
+The interactive diagram is keyboard-operable. Selecting a node updates the evidence panel and reveals pinned source links. A text equivalent appears beneath it, so the component list and its limitations remain readable without JavaScript or pointer interaction. Dashed edges mean source-level or unverified relationships; the separate research node is intentionally not connected to the application path.
+
+The source map is pinned to commit <code>b7207a8177b4d9a564bf3596b8c450372d5d050b</code>, reviewed on <code>2026-11-04</code>. The global GitHub link follows the repository’s latest default branch, while evidence links in the map stay pinned to that review.
+
+<h2 id="package-boundaries">Package boundaries</h2>
+
+- **Browser UI:** Vite owns the development server for the React application.
+- **Node API:** the backend package owns its Express entrypoint, environment, and server script.
+- **Python services:** the task gateway and portfolio workflow have separate dependency and runtime requirements.
+- **Persistence and events:** MongoDB-related service/model code and Socket.IO server setup are present, but a production database connection or event subscription was not verified.
+- **Contracts:** Hardhat compile/test scripts are scoped to the Solidity package. Deployment commands are intentionally not part of the getting-started flow.
+- **Infrastructure:** root and <code>LokiAi/</code> contain multiple Compose variants and NGINX configurations. They are alternatives with package-specific assumptions, not one verified all-in-one startup path.
+- **Identity research:** source proximity does not establish integration with the primary app or production authentication.
+
+A directory in the same repository is not necessarily a service dependency. Check each package’s README, manifest, environment requirements, and callers before wiring it into a release.

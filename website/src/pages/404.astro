@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AgentGlyph from "../components/AgentGlyph.astro";
+---
+
+<BaseLayout title="Page not found" description="The requested WallStreet page could not be found. Return to the source-led overview or browse the documentation." theme="ink">
+  <section class="not-found wrap" aria-labelledby="not-found-title">
+    <div class="not-found__mark" aria-hidden="true"><AgentGlyph symbol="junction" size={120} /></div>
+    <p class="eyebrow">404 · Route not found</p>
+    <h1 id="not-found-title">This path has no verified destination.</h1>
+    <p>The address may have changed, or the page may not exist in this source snapshot. Nothing was submitted or stored.</p>
+    <div class="button-row">
+      <a class="button button--light" href="/">Return home</a>
+      <a class="button button--outline" href="/docs">Browse documentation</a>
+    </div>
+  </section>
+</BaseLayout>

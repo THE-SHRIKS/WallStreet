@@ -1,0 +1,17 @@
+{
+  "name": "Wall Street",
+  "short_name": "Wall Street",
+  "description": "Source-led engineering notes for an in-development project.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#101719",
+  "theme_color": "#101719",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

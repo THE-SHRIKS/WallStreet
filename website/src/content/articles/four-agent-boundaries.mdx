@@ -1,0 +1,51 @@
+---
+title: "Four agents, four different trust boundaries"
+description: "A source-led read of yield selection, arbitrage, risk scoring, and portfolio rebalancing—and why their labels should not be collapsed into one autonomous system."
+category: "Engineering notes"
+order: 1
+motif: "network"
+tags:
+  - agent orchestration
+  - prototype boundaries
+toc:
+  - id: what-agent-means-here
+    label: What agent means here
+  - id: four-roles-four-evidence-levels
+    label: Four roles, four evidence levels
+  - id: orchestration-is-not-deployment
+    label: Orchestration is not deployment
+  - id: a-better-product-contract
+    label: A better product contract
+---
+
+<p class="article-deck">The word <em>agent</em> can describe anything from a decision helper to a funded transaction executor. In this repository, those meanings do not have the same evidence behind them.</p>
+
+<h2 id="what-agent-means-here">What “agent” means here</h2>
+
+The reviewed source contains several agent-shaped modules: a yield optimizer, an arbitrage model, a risk manager, and a portfolio rebalancer. It also contains an orchestration layer that coordinates frontend service objects. That is enough to describe the project’s direction. It is not enough to claim a single autonomous system that continuously reads markets, decides, manages risk, and settles trades.
+
+A useful product description names both the role and its current boundary. “The code contains a strategy-selection service” is a source claim. “The service finds the best yield” is a performance claim. The first can be checked against a file; the second would require a defined market universe, current inputs, a reproducible evaluation, and evidence of the result.
+
+<h2 id="four-roles-four-evidence-levels">Four roles, four evidence levels</h2>
+
+**Yield selection** appears in a backend agent module and a Solidity contract. The code has strategy-shaped inputs and selection logic. The website therefore shows candidate fields without inventing rates, protocol availability, or realized returns. A selected candidate is not a current offer.
+
+**Arbitrage** appears in a model that explores routes and includes simulated execution behavior. A route comparison can explain how the project thinks about a spread. It cannot prove that liquidity exists, that a quote remains valid, or that a transaction would be profitable after fees and slippage. The product page makes the routes schematic and labels the interaction as a model comparison.
+
+**Risk management** has a Solidity source file with threshold-oriented logic. That is a useful place to inspect implementation choices, but a threshold constant is not an audited model. It says nothing by itself about input quality, oracle assumptions, coverage, or whether the check is enforced in every path. The sample slider on this site is local and educational; it never reads a wallet or changes state in the repository.
+
+**Portfolio rebalancing** has a Python engine that calculates allocation deviations and a related contract prototype. The Python execution path explicitly describes itself as simulated. The website preserves that distinction: a proposed target is not an order, a bridge transfer, or an on-chain receipt.
+
+<h2 id="orchestration-is-not-deployment">Orchestration is not deployment</h2>
+
+The term *orchestrator* can make a diagram look more complete than the system behind it. The source includes an agent orchestrator, a separate Express service, a FastAPI/Celery task gateway, a Python rebalancer, and contract sources. Their presence in one repository does not prove that the same runtime starts them, that they share a validated schema, or that a result travels between every boundary. The engineering map uses dashed lines for relationships that remain source-level or unverified.
+
+The frontend also contains UI states that are illustrative. A success message in a browser is not a chain receipt. A model output is not a verified quote. A backend route is not proof that a production API is reachable. These are ordinary distinctions in a system that is still being assembled, and they matter more—not less—when its vocabulary suggests automation.
+
+<h2 id="a-better-product-contract">A better product contract</h2>
+
+A credible interface can be ambitious without overstating certainty. It can show what a module accepts, what it returns, which file implements it, and what remains outside the evidence. It can distinguish a source snapshot from a live service and a simulation from execution. It can also avoid performance badges when no measured results are published.
+
+That is the purpose of the four separate roles on the product page. They are not four claims that money is moving. They are four ways to inspect the repository—each with its own source, limitations, and maturity label.
+
+<p class="article-source-note">Source anchors: <code>LokiAi/src/services/agents/agent-orchestrator.ts</code>, <code>LokiAi/backend/services/agents/yield-optimizer-agent.js</code>, <code>LokiAi/src/services/ml-models/arbitrage-bot-model.ts</code>, <code>portfolio_rebalancer/rebalance_engine.py</code>, and the contract files under <code>loki-contracts/contracts/</code>.</p>

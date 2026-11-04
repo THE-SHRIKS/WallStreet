@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { issueTrackerHref, REPOSITORY_URL } from "../data/project-facts";
+---
+
+<BaseLayout title="Contact" description="How to report a non-sensitive WallStreet issue and how to avoid exposing private security details in a public channel." active="contact" theme="paper">
+  <section class="contact-page wrap" aria-labelledby="contact-title">
+    <Breadcrumbs items={[{ label: "Contact" }]} />
+    <div class="contact-page__intro">
+      <p class="eyebrow">Contact · safe reporting</p>
+      <h1 id="contact-title">The right channel matters.</h1>
+      <p>There is no verified support email or private security-reporting form for this repository. This page does not invent one.</p>
+    </div>
+
+    <div class="contact-options">
+      <article class="contact-option contact-option--public">
+        <span class="contact-option__number">01</span>
+        <div><p class="eyebrow">Non-sensitive feedback</p><h2>Open a public issue.</h2><p>For a reproducible, non-confidential bug or a correction to a source claim, use the repository issue tracker. Include the relevant file or commit and steps to reproduce. Leave out credentials, personal data, private artifacts, and security-sensitive details.</p><a class="button button--dark" href={issueTrackerHref} target="_blank" rel="noreferrer">Open GitHub issues <span aria-hidden="true">↗</span></a></div>
+      </article>
+      <article class="contact-option contact-option--private">
+        <span class="contact-option__number">02</span>
+        <div><p class="eyebrow">Sensitive concern</p><h2>Confirm a private route first.</h2><p>No private reporting address or disclosure policy was verified in the reviewed source. Do not publish sensitive findings in an issue. Ask the repository maintainer to confirm a private channel before sending details; this page makes no response-time or safe-harbor promise.</p><a class="text-link" href={REPOSITORY_URL} target="_blank" rel="noreferrer">Find the repository maintainer ↗</a></div>
+      </article>
+    </div>
+
+    <aside class="privacy-note" aria-labelledby="privacy-note-title">
+      <h2 id="privacy-note-title">A small privacy note</h2>
+      <p>This static website has no contact form, sign-in, analytics SDK, wallet connection, or client-side persistence. The host may process ordinary network and deployment logs under its own policies.</p>
+    </aside>
+  </section>
+</BaseLayout>

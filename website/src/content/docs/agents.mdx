@@ -1,0 +1,41 @@
+---
+title: "Agent roles"
+description: "A practical guide to the four named roles in the source: yield selection, arbitrage modeling, threshold-based risk, and simulated portfolio rebalancing."
+navLabel: "Agent roles"
+order: 3
+toc:
+  - id: yield-selection
+    label: Yield selection
+  - id: arbitrage-model
+    label: Arbitrage model
+  - id: risk-thresholds
+    label: Risk thresholds
+  - id: portfolio-rebalancing
+    label: Portfolio rebalancing
+  - id: what-agent-does-not-mean
+    label: What agent does not mean
+---
+
+<p class="article-deck">“Agent” describes a role in this project, not a blanket claim of autonomy, safety, or live financial execution.</p>
+
+<h2 id="yield-selection">Yield selection</h2>
+
+The backend includes a yield-optimizer service. Its source is organized around strategy candidates and their attributes, with a corresponding Solidity contract prototype. Treat candidate selection as an implementation surface. Do not read it as a current quote, a ranked market survey, or realized APY. The site’s selector uses letters and qualitative fields so it does not invent yield data.
+
+<h2 id="arbitrage-model">Arbitrage model</h2>
+
+The browser repository contains an arbitrage model, and the Solidity package has an arbitrage contract source. The model includes a simulated execution path. A schematic route comparison helps explain the shape of the work, but it does not establish live liquidity, executable prices, net profit, or transaction settlement. See the [simulation boundary note](/articles/simulated-is-not-settled) for the evidence levels used on this site.
+
+<h2 id="risk-thresholds">Risk thresholds</h2>
+
+The risk contract source defines a warning marker at <code>700</code> and a higher marker at <code>900</code>. The product-page slider moves an illustrative value across those source constants. It is not connected to an account, does not invoke the contract, and does not prove that a loss can be prevented. A threshold is only as meaningful as its inputs, model, enforcement, and review.
+
+<h2 id="portfolio-rebalancing">Portfolio rebalancing</h2>
+
+The Python engine computes allocation deviations and forms a candidate rebalance. Its execution path explicitly labels itself simulated. The related Solidity source does not turn that local example into a transaction. The page’s allocation view contains no token balances, prices, or dollar values; it only switches a schematic pattern and announces that no account was read.
+
+<h2 id="what-agent-does-not-mean">What “agent” does not mean</h2>
+
+In these notes, an agent is not assumed to be funded, continuously connected, risk-free, audited, or entitled to act without confirmation. The code map labels orchestration, API, Python, contract, and research boundaries separately. A module can be present without an operational service, and a service can run without being safe for live funds.
+
+When writing about these roles, name the exact module, the inputs it expects, the observable output, and the boundary that remains. Avoid performance claims until the team publishes a reproducible benchmark and defines its data, fees, time range, and review process.
