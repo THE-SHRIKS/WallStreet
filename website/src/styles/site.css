@@ -1276,3 +1276,72 @@ html.lenis body {
 .docs-index__heading {
   margin: 4rem 0 0.8rem;
 }
+
+
+/* ---------- Purple fields run edge to edge, even when the section is contained ---------- */
+main > section,
+main > div {
+  position: relative;
+}
+
+main .field {
+  background: var(--bg) !important;
+  box-shadow: 0 0 0 100vmax var(--bg) !important;
+  clip-path: inset(0 -100vmax);
+  padding-block: clamp(4rem, 8vw, 7rem);
+  margin-block: 0;
+  border-color: transparent;
+}
+
+/* ---------- Pixel partitions ---------- */
+.seam {
+  display: block;
+  height: 168px;
+  margin-block: -1px;
+}
+
+.seam canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  image-rendering: pixelated;
+}
+
+/* ---------- Small notes, scattered like a poster ---------- */
+.float {
+  position: absolute;
+  z-index: 2;
+  max-width: 14rem;
+  margin: 0;
+  font: 400 0.64rem/1.55 var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.float::before {
+  content: "+";
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.float--hero {
+  color: #c9c5bb;
+}
+
+/* ---------- Pixel numerals and labels ---------- */
+.label,
+.row__n {
+  font-family: var(--font-pixel);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 980px) {
+  .float {
+    display: none;
+  }
+}

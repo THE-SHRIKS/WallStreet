@@ -35,6 +35,7 @@ const reading = [
 <BaseLayout title="Wall Street" description={SITE_DESCRIPTION} active="home">
   <div class="stage">
     <video class="stage__model" autoplay muted loop playsinline preload="auto" poster="/assets/video/hero-poster.jpg" aria-hidden="true" tabindex="-1"><source src="/assets/video/hero.mp4" type="video/mp4" /></video>
+  <p class="float float--hero" style="top:24%;right:5%">(01) Open source.<br />In development.<br />Labelled honestly.</p>
   <section class="hero wrap" aria-labelledby="home-title">
     <div class="hero__copy">
       <div class="hero__head">
@@ -52,7 +53,8 @@ const reading = [
   </section>
   </div>
 
-  <section class="split wrap reveal" aria-labelledby="what-title">
+  <section class="split wrap reveal field" aria-labelledby="what-title">
+    <p class="float" style="bottom:9%;left:0">(02) Nothing here is<br />claimed as live.</p>
     <h2 id="what-title">What this <em>is.</em></h2>
     <div class="split__body">
       <p class="lead">Wall Street is a public repository from THE SHRIKS. It holds a React app, a Node API, Python workflows and Solidity contracts that explore how autonomous agents might manage on-chain portfolios, and where their limits should sit.</p>
@@ -85,7 +87,8 @@ const reading = [
     <p class="vista__quote wrap">Nothing here is <em>claimed as live.</em></p>
   </section>
 
-  <section class="split wrap reveal" aria-labelledby="parts-title">
+  <section class="split wrap reveal field" aria-labelledby="parts-title">
+    <p class="float" style="top:8%;right:0">(03) One repository.<br />Five parts, each linked.</p>
     <h2 id="parts-title">One repository, <em>four parts.</em></h2>
     <ul class="parts">
       {parts.map((part) => (
@@ -125,7 +128,8 @@ const reading = [
     </ul>
   </section>
 
-  <section class="closing wrap reveal" aria-labelledby="closing-title">
+  <section class="closing wrap reveal field" aria-labelledby="closing-title">
+    <p class="float" style="top:12%;right:0">(04) Read the source.<br />Judge it yourself.</p>
     <h2 id="closing-title">Read the <em>source.</em></h2>
     <div class="button-row">
       <a class="button button--light" href={REPOSITORY_URL} target="_blank" rel="noreferrer">

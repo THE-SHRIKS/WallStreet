@@ -25,6 +25,7 @@
   --accent-4: #77777f;
   --focus: #a597f5;
 
+  --font-pixel: "Tiny5", "Courier New", monospace;
   --font-serif: "Instrument Serif", "Times New Roman", serif;
   --font-sans: "Newsreader", Georgia, "Times New Roman", serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
@@ -45,4 +46,22 @@
   --motion-state: 240ms;
   --motion-sequence: 3500ms;
   --ease-state: cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+/* A purple field. Sections marked .field switch to it; black stays the default. */
+.field {
+  --bg: #5b3ae6;
+  --surface: #4f30d2;
+  --surface-2: #4629bd;
+  --surface-3: #3d23a8;
+  --text: #f4f0ff;
+  --text-muted: #dcd2ff;
+  --text-faint: #bdaff5;
+  --line: rgb(255 255 255 / 32%);
+  --line-strong: rgb(255 255 255 / 55%);
+  --accent: #ffffff;
+  --accent-deep: #1a0b55;
+  --accent-wash: rgb(255 255 255 / 14%);
+  --focus: #ffffff;
+  color: var(--text);
 }
