@@ -1,0 +1,34 @@
+{
+  "name": "lokiai-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "LokiAI Backend API Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:blockchain": "jest tests/blockchain-utilities.test.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.0.0",
+    "socket.io": "^4.6.1",
+    "ethers": "^6.10.0",
+    "multer": "^1.4.5-lts.1",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2",
+    "winston": "^3.11.0",
+    "node-cron": "^3.0.3",
+    "axios": "^1.6.0",
+    "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@jest/globals": "^29.7.0"
+  }
+}
