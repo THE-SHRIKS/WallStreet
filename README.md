@@ -1,15 +1,10 @@
 <div align="center">
 
-```
-██╗    ██╗ █████╗ ██╗     ██╗         ███████╗████████╗
-██║    ██║██╔══██╗██║     ██║         ██╔════╝╚══██╔══╝
-██║ █╗ ██║███████║██║     ██║         ███████╗   ██║
-██║███╗██║██╔══██║██║     ██║         ╚════██║   ██║
-╚███╔███╔╝██║  ██║███████╗███████╗    ███████║   ██║
- ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝╚══════╝    ╚══════╝   ╚═╝
-```
+<img src="assets/banner.svg" alt="Wall Street" width="760">
 
 ### Agent-driven finance, built in the open.
+
+*Formerly known as **LokiAI**.*
 
 **The first project ever built by the founder of [THE SHRIKS](https://github.com/THE-SHRIKS).**
 
@@ -22,6 +17,8 @@
 ---
 
 ## The first one
+
+> **Name change.** This project started life as **LokiAI** (also written Loki.AI). It was renamed **Wall Street**. The code still carries the old name in places, for example the `LokiAi/` folder, so if you see LokiAI anywhere, it is this same project.
 
 Every builder has a first project: the one that is too big, too ambitious, and teaches more than any tutorial could.
 
