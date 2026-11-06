@@ -8,6 +8,8 @@ const siteUrl = (process.env.SITE_URL ?? "https://wallstreet.theshriks.space").r
 export default defineConfig({
   site: siteUrl,
   output: "static",
+  // Never inline scripts: the CSP in vercel.json only allows scripts from this origin.
+  vite: { build: { assetsInlineLimit: 0 } },
   redirects: { "/resources": "/docs" },
   integrations: [mdx(), sitemap({ filter: (page) => !page.endsWith("/404") })],
 });
