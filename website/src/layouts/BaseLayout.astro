@@ -38,7 +38,8 @@ const {
   type = "website",
   noindex = false,
 } = Astro.props;
-const pageTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
+const pageTitle =
+  title === SITE_NAME ? `${SITE_NAME}: agent-driven finance, built in the open` : `${title} — ${SITE_NAME}`;
 const origin = (Astro.site ?? new URL("https://wallstreet.theshriks.space")).origin;
 const path = Astro.url.pathname.replace(/\/index\.html$/, "/");
 const canonicalUrl = new URL(path, origin).href;
