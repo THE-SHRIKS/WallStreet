@@ -28,6 +28,7 @@ interface Props {
   description?: string;
   active?: string;
   type?: "website" | "article";
+  noindex?: boolean;
 }
 
 const {
@@ -35,10 +36,74 @@ const {
   description = SITE_DESCRIPTION,
   active = "",
   type = "website",
+  noindex = false,
 } = Astro.props;
 const pageTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
-const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
-const socialImage = Astro.site ? new URL("/assets/pixel/system-desktop.png", Astro.site).href : undefined;
+const origin = (Astro.site ?? new URL("https://wallstreet.theshriks.space")).origin;
+const path = Astro.url.pathname.replace(/\/index\.html$/, "/");
+const canonicalUrl = new URL(path, origin).href;
+const socialImage = new URL("/og-image.png", origin).href;
+const isHome = path === "/";
+const segments = path.split("/").filter(Boolean);
+const crumbName = (seg: string, last: boolean) =>
+  last ? title : seg.charAt(0).toUpperCase() + seg.slice(1).replace(/-/g, " ");
+const breadcrumb = {
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: SITE_NAME, item: `${origin}/` },
+    ...segments.map((seg, i) => ({
+      "@type": "ListItem",
+      position: i + 2,
+      name: crumbName(seg, i === segments.length - 1),
+      item: new URL("/" + segments.slice(0, i + 1).join("/"), origin).href,
+    })),
+  ],
+};
+const graph: Record<string, unknown>[] = [
+  {
+    "@type": "Organization",
+    "@id": `${origin}/#organization`,
+    name: "THE SHRIKS",
+    url: "https://github.com/THE-SHRIKS",
+    sameAs: ["https://github.com/THE-SHRIKS"],
+  },
+  {
+    "@type": "WebSite",
+    "@id": `${origin}/#website`,
+    url: `${origin}/`,
+    name: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    inLanguage: "en",
+    publisher: { "@id": `${origin}/#organization` },
+  },
+  {
+    "@type": type === "article" ? "TechArticle" : "WebPage",
+    "@id": `${canonicalUrl}#page`,
+    url: canonicalUrl,
+    name: pageTitle,
+    headline: title,
+    description,
+    inLanguage: "en",
+    isPartOf: { "@id": `${origin}/#website` },
+    author: { "@id": `${origin}/#organization` },
+    publisher: { "@id": `${origin}/#organization` },
+    image: socialImage,
+  },
+];
+if (isHome) {
+  graph.push({
+    "@type": "SoftwareSourceCode",
+    "@id": `${origin}/#source`,
+    name: SITE_NAME,
+    codeRepository: "https://github.com/THE-SHRIKS/WallStreet",
+    programmingLanguage: ["TypeScript", "JavaScript", "Python", "Solidity"],
+    description: SITE_DESCRIPTION,
+    author: { "@id": `${origin}/#organization` },
+  });
+} else {
+  graph.push(breadcrumb);
+}
+const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\u003c");
 ---
 
 <!doctype html>
@@ -51,18 +116,25 @@ const socialImage = Astro.site ? new URL("/assets/pixel/system-desktop.png", Ast
     <title>{pageTitle}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
-    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1"} />
+    <meta name="author" content="THE SHRIKS" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
-    {socialImage && <meta property="og:image" content={socialImage} />}
-    {socialImage && <meta property="og:image:alt" content="Illustrative system path; not live market data." />}
-    <meta name="twitter:card" content={socialImage ? "summary_large_image" : "summary"} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Wall Street: agent-driven finance, built in the open." />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
-    {socialImage && <meta name="twitter:image" content={socialImage} />}
+    <meta name="twitter:image" content={socialImage} />
+    <script type="application/ld+json" set:html={jsonLd} />
     <slot name="head" />
   </head>
   <body>
