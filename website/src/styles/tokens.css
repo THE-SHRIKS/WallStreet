@@ -1,0 +1,48 @@
+:root {
+  color-scheme: dark;
+
+  /* Surfaces: pure black with stepped neutral layers. */
+  --bg: #000000;
+  --surface: #0a0a0b;
+  --surface-2: #111113;
+  --surface-3: #18181b;
+
+  /* Text: warm off-white, never pure white. */
+  --text: #ece8df;
+  --text-muted: #a7a39a;
+  --text-faint: #77777f;
+
+  /* Lines */
+  --line: #1f1f24;
+  --line-strong: #2e2e35;
+
+  /* One restrained purple. Used for focus, links, and the sphere shadow. */
+  --accent: #a597f5;
+  --accent-deep: #5b4bc4;
+  --accent-wash: rgb(165 151 245 / 10%);
+  --accent-2: #a7a39a;
+  --accent-3: #ece8df;
+  --accent-4: #77777f;
+  --focus: #a597f5;
+
+  --font-serif: "Instrument Serif", "Times New Roman", serif;
+  --font-sans: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --page-width: 1240px;
+  --reading-width: 68ch;
+  --space-1: 0.375rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4.5rem;
+  --space-8: 6.5rem;
+  --space-9: 9rem;
+  --radius-small: 4px;
+  --radius-card: 6px;
+  --motion-micro: 120ms;
+  --motion-state: 240ms;
+  --motion-sequence: 3500ms;
+  --ease-state: cubic-bezier(0.2, 0.75, 0.25, 1);
+}

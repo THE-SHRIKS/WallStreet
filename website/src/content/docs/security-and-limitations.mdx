@@ -1,0 +1,41 @@
+---
+title: "Security and limitations"
+description: "What this static website does not collect, what the reviewed repository does not establish, and how to report a sensitive concern without exposing it publicly."
+navLabel: "Security & limits"
+order: 5
+toc:
+  - id: website-data-boundary
+    label: Website data boundary
+  - id: repository-limitations
+    label: Repository limitations
+  - id: reporting-a-concern
+    label: Reporting a concern
+  - id: maintainer-release-checks
+    label: Maintainer release checks
+---
+
+<p class="article-deck">This page is a boundary statement, not a security audit, privacy certification, or safe-harbor policy.</p>
+
+<h2 id="website-data-boundary">Website data boundary</h2>
+
+The website is a static, source-led publication. It has no sign-in, contact form, analytics SDK, wallet connection, client-side persistence, or third-party image/font embed. Its interactive examples operate locally in the browser and do not submit a request or transaction. The hosting provider may process ordinary network and deployment logs under its own policies.
+
+The site does not load repository configuration, credentials, database contents, or model artifacts. Its asset references are local and its source links point to public GitHub pages. A deployment should set a real <code>SITE_URL</code> before canonical URLs and a sitemap are emitted; this repository does not invent a production domain.
+
+<h2 id="repository-limitations">Repository limitations</h2>
+
+The project source contains prototype and simulated paths. No audit, production deployment, contract address, live market-data feed, or end-to-end execution flow was verified for this site review. A browser message, passing local test, model output, threshold, or contract file is not a guarantee of safety, performance, or settlement.
+
+The wider repository should be reviewed privately before public release. In particular, maintainers should audit tracked configuration for credential-like values. This website intentionally does not reproduce file paths, values, or sample records from that review.
+
+<h2 id="reporting-a-concern">Reporting a concern</h2>
+
+Use the public [GitHub issue tracker](https://github.com/THE-SHRIKS/WallStreet/issues) only for non-sensitive questions and reproducible, non-confidential bugs. Do not place credentials, personal data, private model artifacts, exploit details, or sensitive vulnerability evidence in a public issue.
+
+No private security-reporting channel was verified during this review. If you believe you have a security concern, first ask the repository maintainer to confirm a private reporting path; do not disclose sensitive details until that path is confirmed. This page does not promise a response time or a coordinated-disclosure policy.
+
+<h2 id="maintainer-release-checks">Maintainer release checks</h2>
+
+Before describing the wider repository as open source, publish a repository-level licence file and confirm that every included asset may be redistributed. Before production indexing, set the verified public origin and review canonical and sitemap output. Before inviting security reports, establish a private intake route and publish its policy. Before asserting a live financial flow, verify each integration and transaction boundary independently.
+
+These are release checks, not completed audit findings. For non-sensitive corrections to the site’s source claims, use the issue tracker and include the commit or file that should be reviewed.

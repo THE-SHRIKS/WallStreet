@@ -1,0 +1,47 @@
+---
+title: "Read the repository, not just the labels"
+description: "A practical guide to WallStreet’s package manifests, service boundaries, and scoped setup commands."
+category: "Development logs"
+order: 3
+motif: "ledger"
+tags:
+  - repository map
+  - getting started
+toc:
+  - id: start-with-package-boundaries
+    label: Start with package boundaries
+  - id: a-documented-stack-is-not-a-runtime
+    label: A documented stack is not a runtime
+  - id: scoped-setup-is-safer
+    label: Scoped setup is safer
+  - id: what-to-check-next
+    label: What to check next
+---
+
+<p class="article-deck">The repository README and the nested packages tell different parts of the story. Reading both is faster than assuming one root command starts every service.</p>
+
+<h2 id="start-with-package-boundaries">Start with package boundaries</h2>
+
+The project README describes a React/Vite frontend, a Rust-oriented backend, optional Python services, multiple chain toolkits, and database migration work. The manifests in the current tree show additional, more specific boundaries: the browser app under <code>LokiAi/</code> declares Vite and React; <code>LokiAi/backend/</code> declares a Node server with an Express development script; <code>task_gateway/</code> is a separate FastAPI/Celery service; and <code>loki-contracts/</code> has Hardhat compile, test, and deploy commands.
+
+That does not mean the README is useless or that one side is necessarily “wrong.” It means the repository describes work at different ages and levels. A package manifest answers a narrow question—what this package declares—not whether its dependencies are installed, its environment is complete, or its service connects to the rest of the system.
+
+<h2 id="a-documented-stack-is-not-a-runtime">A documented stack is not a runtime</h2>
+
+A list of technologies can be aspirational, historical, or scoped to one directory. The folder name <code>backend</code> does not tell you which language it uses; the manifest and entry point do. A Compose file can group services without proving that their images build or that their credentials are safe. A contract test can exercise a local mock without demonstrating a deployment.
+
+Before describing the architecture publicly, identify a commit, inspect the package manifest and entrypoint, then follow the relevant call sites. For claims about live behavior, inspect the service configuration and external evidence as well. The engineering page pins its claims to a reviewed commit so a future reader can see exactly what changed after the review.
+
+<h2 id="scoped-setup-is-safer">Scoped setup is safer</h2>
+
+The site itself is a standalone Astro package in <code>website/</code>; its install and preview commands stay inside that directory. The existing UI has its own Vite manifest, the backend has a different manifest and watch command, and the contract workspace has a separate Hardhat toolchain. Each should be installed and started according to its own package boundary.
+
+The documentation therefore offers package-level commands rather than a root-level “start everything” command. It does not deploy contracts, connect a wallet, start a broker, or choose one of several Compose variants on the reader’s behalf. Local environment values belong in ignored files, never in a public issue, commit, or screenshot.
+
+<h2 id="what-to-check-next">What to check next</h2>
+
+For the frontend, verify the Vite route you intend to inspect. For the Node service, verify that its required configuration is available locally before starting it. For the Python gateway, confirm the broker and worker configuration independently. For contracts, compile and test against a local development environment before considering any deployment path. None of those checks is a substitute for a security review.
+
+This is the central repository habit: name the directory, name the command, and name the evidence that would show it worked. When a project is assembled from prototypes, that small discipline prevents an attractive diagram from becoming a false description of the running system.
+
+<p class="article-source-note">Source anchors: <code>README.md</code>, <code>LokiAi/package.json</code>, <code>LokiAi/backend/package.json</code>, and <code>loki-contracts/package.json</code>.</p>

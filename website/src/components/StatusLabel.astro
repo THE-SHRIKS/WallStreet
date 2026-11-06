@@ -1,0 +1,16 @@
+---
+import type { EvidenceStatus } from "../data/project-facts";
+
+interface Props {
+  status: EvidenceStatus;
+  compact?: boolean;
+}
+
+const { status, compact = false } = Astro.props;
+const className = status.toLowerCase().replaceAll(" ", "-");
+---
+
+<span class:list={["status-label", `status-label--${className}`, compact && "status-label--compact"]}>
+  <span class="status-label__pip" aria-hidden="true"></span>
+  <span>{status}</span>
+</span>

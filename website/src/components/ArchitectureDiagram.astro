@@ -1,0 +1,127 @@
+---
+import AgentGlyph from "./AgentGlyph.astro";
+import SourceLink from "./SourceLink.astro";
+import StatusLabel from "./StatusLabel.astro";
+import { SYSTEM_EDGES, SYSTEM_NODES } from "../data/engineering";
+import { sourceHref } from "../data/project-facts";
+
+const edgePaths: Record<string, string> = {
+  "browser:api": "M 290 100 H 360",
+  "api:orchestrator": "M 640 100 H 710",
+  "browser:events": "M 150 165 V 235",
+  "api:gateway": "M 500 165 V 210",
+  "api:persistence": "M 640 147 H 660 V 380 H 500 V 410",
+  "orchestrator:rebalancer": "M 850 165 V 210",
+  "rebalancer:contracts": "M 850 365 V 410",
+};
+
+const firstNode = SYSTEM_NODES.find((node) => node.id === "browser");
+if (!firstNode) throw new Error("The architecture map requires a browser node.");
+---
+
+<section class="architecture-map" aria-labelledby="architecture-map-title" data-architecture-map>
+  <div class="architecture-map__intro">
+    <div>
+      <p class="eyebrow">Interactive source map</p>
+      <h2 id="architecture-map-title">Related code. Unverified deployment.</h2>
+    </div>
+    <p>Amber dashes mark source-level or unverified relationships; the red dash pattern marks a simulated path. Choose a node to inspect its evidence and boundary.</p>
+  </div>
+
+  <ul class="architecture-key" aria-label="Diagram key">
+    <li><span class="architecture-key__sample architecture-key__sample--unverified" aria-hidden="true"></span><span>Source-level or unverified relationship</span></li>
+    <li><span class="architecture-key__sample architecture-key__sample--simulation" aria-hidden="true"></span><span>Simulated path</span></li>
+    <li><span class="architecture-key__node" aria-hidden="true"></span><span>Selectable source component</span></li>
+  </ul>
+
+  <div class="architecture-stage" data-architecture-stage hidden>
+    <svg class="architecture-stage__lines" viewBox="0 0 1000 600" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+      <defs>
+        <marker id="architecture-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L6,3 z" fill="#3fb8a0" />
+        </marker>
+      </defs>
+      {SYSTEM_EDGES.map((edge) => (
+        <path
+          d={edgePaths[`${edge.from}:${edge.to}`]}
+          class:list={["architecture-edge", `architecture-edge--${edge.kind}`]}
+          marker-end="url(#architecture-arrow)"
+        />
+      ))}
+    </svg>
+
+    {SYSTEM_NODES.map((node) => (
+      <button
+        type="button"
+        class="architecture-node"
+        data-node-id={node.id}
+        data-column={node.column}
+        data-row={node.row}
+        aria-pressed="false"
+        aria-controls="architecture-detail"
+        aria-label={`Inspect ${node.name}, status ${node.status}`}
+      >
+        <span class="architecture-node__topline">
+          <span class="architecture-node__role">{node.role}</span>
+          <StatusLabel status={node.status} compact />
+        </span>
+        <span class="architecture-node__main">
+          <AgentGlyph symbol={node.id === "browser" ? "signal" : node.id === "api" ? "relay" : node.id === "orchestrator" ? "processor" : node.id === "events" ? "heartbeat" : node.id === "gateway" ? "junction" : node.id === "persistence" ? "ledger" : node.id === "rebalancer" ? "rebalance" : node.id === "contracts" ? "contract" : "risk"} size={28} />
+          <span class="architecture-node__name">{node.shortName}</span>
+        </span>
+        <span class="architecture-node__hint">Inspect source <span aria-hidden="true">↗</span></span>
+      </button>
+    ))}
+  </div>
+
+  <div class="architecture-detail" id="architecture-detail" aria-live="polite" aria-atomic="true">
+    <article class="architecture-detail__item">
+      <div class="architecture-detail__status"><StatusLabel status={firstNode.status} /></div>
+      <h3>{firstNode.name}</h3>
+      <p>{firstNode.description}</p>
+      <p class="architecture-detail__boundary">Boundary: {firstNode.boundary}</p>
+      <div class="source-list">
+        {firstNode.sourcePaths.map((path) => <SourceLink path={path} />)}
+      </div>
+    </article>
+  </div>
+
+  {SYSTEM_NODES.map((node) => (
+    <template data-node-template={node.id}>
+      <article class="architecture-detail__item">
+        <div class="architecture-detail__status"><StatusLabel status={node.status} /></div>
+        <h3>{node.name}</h3>
+        <p>{node.description}</p>
+        <p class="architecture-detail__boundary">Boundary: {node.boundary}</p>
+        <div class="source-list">
+          {node.sourcePaths.map((path) => <SourceLink path={path} />)}
+        </div>
+      </article>
+    </template>
+  ))}
+
+  <div class="architecture-outline">
+    <h3>Text equivalent</h3>
+    <ol>
+      {SYSTEM_NODES.map((node) => (
+        <li>
+          <div class="architecture-outline__heading">
+            <h4>{node.name}</h4>
+            <StatusLabel status={node.status} compact />
+          </div>
+          <p>{node.description}</p>
+          <p class="architecture-detail__boundary">Boundary: {node.boundary}</p>
+          <div class="source-list">
+            {node.sourcePaths.map((path) => <SourceLink path={path} />)}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <p class="architecture-map__source-note">
+    Source snapshot: <a href={sourceHref("", "tree")} target="_blank" rel="noreferrer">{sourceHref("", "tree")}</a>.
+    The links above are pinned to the reviewed commit; use the latest-source links in the footer for newer changes.
+  </p>
+  <script src="../scripts/architecture-map.ts"></script>
+</section>

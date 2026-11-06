@@ -1,0 +1,48 @@
+---
+title: "Contract prototypes"
+description: "A source-level tour of the four Solidity contracts, the mock paths to notice, and the safe local compile workflow declared by the Hardhat package."
+navLabel: "Contracts"
+order: 4
+toc:
+  - id: contract-set
+    label: Contract set
+  - id: mock-paths-and-tests
+    label: Mock paths and tests
+  - id: local-compile
+    label: Local compile
+  - id: deployment-boundary
+    label: Deployment boundary
+---
+
+<p class="article-deck">The repository contains Solidity sources for arbitrage, yield optimization, risk management, and portfolio rebalancing. This page describes the files, not a deployed protocol.</p>
+
+<h2 id="contract-set">Contract set</h2>
+
+- **ArbitrageBot.sol** describes an arbitrage-oriented interface and includes source-level mock behavior.
+- **YieldOptimizer.sol** contains strategy-selection logic and mock-oriented paths.
+- **RiskManager.sol** defines threshold-shaped score logic and state changes. The visible constants are code values, not an external risk assessment.
+- **PortfolioRebalancer.sol** represents rebalance operations in Solidity. Its presence does not prove a corresponding Python proposal was submitted or settled.
+
+Use the commit-pinned source links on the [Engineering page](/engineering#contracts) to inspect exact functions, events, and tests at the reviewed snapshot. The current source review did not verify a deployed address, verified bytecode, or third-party audit.
+
+<h2 id="mock-paths-and-tests">Mock paths and tests</h2>
+
+A mock makes a control flow testable without a live external dependency. It can be the right tool for development, but the public product copy should continue to say “mock” or “simulation” when the visible result depends on it. A passing local test can confirm an assertion against the local test setup; it cannot confirm an oracle, protocol endpoint, bridge, or chain deployment.
+
+Before treating any contract as production-ready, a maintainer would need an explicit deployment and verification record, a review of authorization and upgrade assumptions, and an independent security assessment. This page does not assert that those steps have been completed.
+
+<h2 id="local-compile">Local compile</h2>
+
+The nested Hardhat package declares a local compile script. From the repository root:
+
+```sh
+cd loki-contracts
+npm install
+npm run compile
+```
+
+The command compiles the local package. It is intentionally different from a deployment command. The website does not start a deploy script or ask for network credentials.
+
+<h2 id="deployment-boundary">Deployment boundary</h2>
+
+Do not copy a sample address, environment value, or private key into this page. Do not infer a production network from the presence of a network name in a script. A public deployment claim needs the intended chain, address, source verification, and a reliable way to inspect the deployed code. Until those details are published and reviewed, treat the contract set as prototypes.
