@@ -1,0 +1,94 @@
+---
+import AgentGlyph from "./AgentGlyph.astro";
+
+const sequenceSteps = [
+  { id: "ready", label: "Ready", detail: "A sample signal waits at the edge." },
+  { id: "receive", label: "Receive", detail: "The signal follows one constrained route." },
+  { id: "evaluate", label: "Evaluate", detail: "A specialist module marks a candidate state." },
+  { id: "risk", label: "Risk", detail: "A threshold is shown as a review point, not a guarantee." },
+  { id: "interface", label: "Interface", detail: "The illustration reaches a contract boundary." },
+  { id: "complete", label: "Hold", detail: "Illustrative path complete. No live data or transaction." },
+];
+---
+
+<section class="system-sequence" aria-labelledby="system-sequence-title" data-system-sequence data-step="complete">
+  <div class="system-sequence__heading">
+    <div>
+      <p class="eyebrow eyebrow--light">A source-level story</p>
+      <h2 id="system-sequence-title">From signal to recorded state.</h2>
+    </div>
+    <p class="system-sequence__disclaimer">Illustrative path · not live data</p>
+  </div>
+
+  <figure class="system-board" data-board>
+    <picture class="system-board__art">
+      <source media="(max-width: 680px)" srcset="/assets/pixel/system-mobile.png" />
+      <img
+        src="/assets/pixel/system-desktop.png"
+        width="1264"
+        height="886"
+        alt="Pixel-art system diagram: one sample signal passes through a processor and decision gate, then reaches a contract interface and ledger grid."
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
+    <span class="system-board__label system-board__label--input">Input · sample signal</span>
+    <span class="system-board__label system-board__label--processor">Agent evaluation</span>
+    <span class="system-board__label system-board__label--gate">Risk gate · illustrative</span>
+    <span class="system-board__label system-board__label--ledger">Recorded state · concept</span>
+    <span class="system-board__packet" data-packet aria-hidden="true"><AgentGlyph symbol="signal" size={24} /></span>
+    <span class="system-board__focus" aria-hidden="true"></span>
+    <figcaption class="system-board__caption">
+      The illustration explains relationships between code areas. It does not represent a live portfolio, market feed, or contract call.
+    </figcaption>
+  </figure>
+
+  <div class="sequence-controls">
+    <button class="button button--outline button--light" type="button" data-sequence-replay>
+      <span class="button__pixel" aria-hidden="true"></span>
+      Replay sequence
+    </button>
+    <p class="sequence-status" data-sequence-status aria-live="polite">Sequence complete. Illustrative path; no live data or transaction.</p>
+  </div>
+
+  <ol class="sequence-steps" aria-label="System sequence">
+    {sequenceSteps.map((step, index) => (
+      <li data-sequence-stage={step.id} aria-current={step.id === "complete" ? "step" : undefined}>
+        <span class="sequence-steps__index">0{index + 1}</span>
+        <span class="sequence-steps__copy">
+          <span class="sequence-steps__label">{step.label}</span>
+          <span class="sequence-steps__detail">{step.detail}</span>
+        </span>
+      </li>
+    ))}
+  </ol>
+
+  <div class="agent-selector" data-agent-selector>
+    <p class="eyebrow eyebrow--light">Select a source-level agent</p>
+    <div class="agent-selector__buttons" role="group" aria-label="Choose an agent to inspect">
+      <button type="button" data-agent-choice="yield" aria-pressed="false" aria-controls="agent-explanation" aria-expanded="false">
+        <AgentGlyph symbol="yield" size={22} />
+        <span>Yield optimizer</span>
+      </button>
+      <button type="button" data-agent-choice="arbitrage" aria-pressed="false" aria-controls="agent-explanation" aria-expanded="false">
+        <AgentGlyph symbol="arbitrage" size={22} />
+        <span>Arbitrage bot</span>
+      </button>
+      <button type="button" data-agent-choice="risk" aria-pressed="false" aria-controls="agent-explanation" aria-expanded="false">
+        <AgentGlyph symbol="risk" size={22} />
+        <span>Risk manager</span>
+      </button>
+      <button type="button" data-agent-choice="rebalance" aria-pressed="false" aria-controls="agent-explanation" aria-expanded="false">
+        <AgentGlyph symbol="rebalance" size={22} />
+        <span>Portfolio rebalancer</span>
+      </button>
+    </div>
+    <div class="agent-explanation" id="agent-explanation" data-agent-explanation hidden>
+      <p class="agent-explanation__eyebrow" data-agent-status></p>
+      <h3 data-agent-title></h3>
+      <p data-agent-copy></p>
+      <a class="text-link" data-agent-link href="/product#yield-optimizer">Read the product notes</a>
+    </div>
+  </div>
+</section>

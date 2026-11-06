@@ -1,0 +1,29 @@
+---
+import { FOOTER_LINKS, SITE_NAME } from "../data/site";
+import { AUDIT_COMMIT } from "../data/project-facts";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__top wrap">
+    <div class="site-footer__identity">
+      <a class="brand" href="/" aria-label="Wall Street home">Wall Street</a>
+      <p>Public source. In development. Not a live trading service.</p>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="Footer navigation">
+      {FOOTER_LINKS.map((link) => (
+        <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noreferrer" : undefined}>
+          {link.label}
+          {link.external && <span aria-hidden="true">↗</span>}
+        </a>
+      ))}
+    </nav>
+  </div>
+
+  <div class="site-footer__bottom wrap">
+    <p>© {year} THE SHRIKS · {SITE_NAME}</p>
+    <p>Source review <code>{AUDIT_COMMIT.slice(0, 7)}</code> · licence not confirmed</p>
+  </div>
+</footer>

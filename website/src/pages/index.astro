@@ -1,0 +1,138 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DitherArt from "../components/DitherArt.astro";
+import SourceLink from "../components/SourceLink.astro";
+import { AUDIT_COMMIT, AUDIT_DATE, PROJECT_FACTS, REPOSITORY_URL } from "../data/project-facts";
+import { SITE_DESCRIPTION } from "../data/site";
+
+const agents = [
+  { id: "yield-optimizer", name: "Yield optimizer", status: "Prototype", text: "Compares strategy candidates in source. No current offer or return is published." },
+  { id: "arbitrage-bot", name: "Arbitrage bot", status: "Simulated", text: "A model path explores route differences. Live execution is not verified." },
+  { id: "risk-manager", name: "Risk manager", status: "Prototype", text: "Contract thresholds are visible in source. They do not promise contained risk." },
+  { id: "portfolio-rebalancer", name: "Portfolio rebalancer", status: "Simulated", text: "A Python workflow proposes a rebalance and simulates the execution step." },
+];
+
+const parts = [
+  { title: "Browser application", text: "React, TypeScript and Vite. Some states are seeded or simulated.", path: "LokiAi/src", kind: "tree" as const },
+  { title: "API and data", text: "Node, Express and MongoDB-oriented files. External connections were not verified.", path: "LokiAi/backend/server.js", kind: "blob" as const },
+  { title: "Python workflows", text: "Allocation analysis and a task gateway. The trade path is simulated.", path: "portfolio_rebalancer/rebalance_engine.py", kind: "blob" as const },
+  { title: "Contracts", text: "Four Solidity sources with local tooling. Mock paths are not a deployment record.", path: "loki-contracts/contracts", kind: "tree" as const },
+];
+
+const statusOrder = ["Implemented", "Documented", "Prototype", "Simulated", "Research", "Not verified"] as const;
+const counts = statusOrder
+  .map((status) => ({ status, count: PROJECT_FACTS.filter((fact) => fact.status === status).length }))
+  .filter((entry) => entry.count > 0);
+const slug = (value: string) => value.toLowerCase().replaceAll(" ", "-");
+
+const reading = [
+  { title: "Articles", text: "Three notes on why simulation labels matter.", href: "/articles" },
+  { title: "Docs and resources", text: "Setup, architecture, repository, issues and licence status.", href: "/docs" },
+  { title: "About", text: "What the project is, and what it is not.", href: "/about" },
+];
+---
+
+<BaseLayout title="Wall Street" description={SITE_DESCRIPTION} active="home">
+  <div class="stage">
+    <video class="stage__model" autoplay muted loop playsinline preload="auto" poster="/assets/video/hero-poster.jpg" aria-hidden="true" tabindex="-1"><source src="/assets/video/hero.mp4" type="video/mp4" /></video>
+  <section class="hero wrap" aria-labelledby="home-title">
+    <div class="hero__copy">
+      <div class="hero__head">
+      <p class="label rise" style="--d:0ms">Open source <span aria-hidden="true">/</span> In development</p>
+      <h1 id="home-title"><span class="rise" style="--d:80ms">Agent-driven finance,</span> <em class="rise" style="--d:200ms">read in the open.</em></h1>
+      </div>
+      <div class="hero__aside">
+        <p class="hero__sub rise" style="--d:340ms">An open-source project exploring agent orchestration and risk boundaries for on-chain finance.</p>
+        <div class="button-row rise" style="--d:460ms">
+          <a class="button button--light" href={REPOSITORY_URL} target="_blank" rel="noreferrer">View on GitHub</a>
+          <a class="button button--outline" href="/docs">Read the docs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <section class="split wrap reveal" aria-labelledby="what-title">
+    <h2 id="what-title">What this <em>is.</em></h2>
+    <div class="split__body">
+      <p class="lead">Wall Street is a public repository from THE SHRIKS. It holds a React app, a Node API, Python workflows and Solidity contracts that explore how autonomous agents might manage on-chain portfolios, and where their limits should sit.</p>
+      <p>This site reads that code. It names each part, labels how far it goes, and links to the source.</p>
+      <a class="text-link" href="/about">About the project</a>
+    </div>
+  </section>
+
+  <section class="wrap reveal" aria-labelledby="agents-title">
+    <h2 id="agents-title" class="section-title">Four agents, <em>four levels of proof.</em></h2>
+    <ol class="rows">
+      {agents.map((agent, i) => (
+        <li>
+          <a class="row" href={`/product#${agent.id}`}>
+            <span class="row__n">0{i + 1}</span>
+            <span class="row__main">
+              <span class="row__title">{agent.name}</span>
+              <span class="row__text">{agent.text}</span>
+            </span>
+            <span class="row__status">{agent.status}</span>
+            <span class="row__arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="vista reveal" aria-label="Illustration and statement">
+    <DitherArt variant="ship" label="Decorative dithered saucer hovering over hills. Not a product screenshot." cell={6} />
+    <p class="vista__quote wrap">Nothing here is <em>claimed as live.</em></p>
+  </section>
+
+  <section class="split wrap reveal" aria-labelledby="parts-title">
+    <h2 id="parts-title">One repository, <em>four parts.</em></h2>
+    <ul class="parts">
+      {parts.map((part) => (
+        <li>
+          <h3>{part.title}</h3>
+          <p>{part.text}</p>
+          <SourceLink path={part.path} kind={part.kind} />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="split wrap reveal" aria-labelledby="findings-title">
+    <h2 id="findings-title">{PROJECT_FACTS.length} findings, <em>each labelled.</em></h2>
+    <div class="split__body">
+      <div class="gauge" role="img" aria-label={`Findings by status: ${counts.map((c) => `${c.count} ${c.status}`).join(", ")}`}>
+        {counts.map((c) => <span class={`gauge__seg gauge__seg--${slug(c.status)}`} style={`flex:${c.count}`}></span>)}
+      </div>
+      <ul class="gauge__legend">
+        {counts.map((c) => <li><span class={`gauge__dot gauge__seg--${slug(c.status)}`} aria-hidden="true"></span>{c.status} <b>{c.count}</b></li>)}
+      </ul>
+      <p class="note">Reviewed {AUDIT_DATE} at <code>{AUDIT_COMMIT.slice(0, 7)}</code>. <a class="text-link" href="/engineering">See every finding</a></p>
+    </div>
+  </section>
+
+  <section class="wrap reveal" aria-labelledby="reading-title">
+    <h2 id="reading-title" class="section-title">Keep <em>reading.</em></h2>
+    <ul class="reading">
+      {reading.map((item) => (
+        <li>
+          <a href={item.href}>
+            <span class="reading__title">{item.title}<span aria-hidden="true"> →</span></span>
+            <span class="reading__text">{item.text}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="closing wrap reveal" aria-labelledby="closing-title">
+    <h2 id="closing-title">Read the <em>source.</em></h2>
+    <div class="button-row">
+      <a class="button button--light" href={REPOSITORY_URL} target="_blank" rel="noreferrer">
+        <svg class="gh-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg>
+        Open GitHub
+      </a>
+      <a class="button button--outline" href="/docs/getting-started">Setup guide</a>
+    </div>
+  </section>
+</BaseLayout>

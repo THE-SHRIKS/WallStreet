@@ -1,0 +1,39 @@
+---
+import DitherArt from "../../components/DitherArt.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { getCollection } from "astro:content";
+
+const articles = (await getCollection("articles")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="Articles" description="Undated engineering notes on agent boundaries, simulation, and how to read the WallStreet source." active="articles">
+  <section class="article-index wrap" aria-labelledby="articles-title">
+    <DitherArt class="intro-art" variant="horizon" label="Decorative dithered sunset over ridges." cell={4} />
+    <Breadcrumbs items={[{ label: "Articles" }]} />
+    <header class="page-intro__copy article-index__intro">
+      <p class="eyebrow">Articles · source-led notes</p>
+      <h1 id="articles-title">The engineering between the claims.</h1>
+      <p>Three notes about how this repository is assembled, what a simulation can show, and where a prototype should stop making promises. No publication dates are assigned until the maintainer sets them.</p>
+    </header>
+
+    <ol class="article-list">
+      {articles.map((entry, index) => (
+        <li>
+          <a class="article-list__row" href={`/articles/${entry.id}`}>
+            <span class="article-list__number">0{index + 1}</span>
+            <span class="article-list__copy">
+              <span class="article-list__category">{entry.data.category} · Undated project note</span>
+              <span class="article-list__title">{entry.data.title}</span>
+              <span class="article-list__description">{entry.data.description}</span>
+              <span class="article-list__tags">{entry.data.tags.map((tag) => <span>{tag}</span>)}</span>
+            </span>
+            <span class="article-list__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+
+    <p class="article-index__footnote">Every article is grounded in a commit-pinned source review. Read the <a href="/engineering">engineering map</a> for component links and evidence limits.</p>
+  </section>
+</BaseLayout>

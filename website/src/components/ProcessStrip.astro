@@ -1,0 +1,21 @@
+---
+interface Step {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  steps: Step[];
+  label?: string;
+}
+
+const { steps, label = "System path" } = Astro.props;
+---
+
+<ol class="process-strip" aria-label={label}>
+  {steps.map((step) => (
+    <li>
+      {step.href ? <a href={step.href}>{step.label}</a> : <span>{step.label}</span>}
+    </li>
+  ))}
+</ol>

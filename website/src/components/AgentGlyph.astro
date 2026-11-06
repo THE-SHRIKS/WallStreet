@@ -1,0 +1,12 @@
+---
+interface Props {
+  symbol: "signal" | "relay" | "processor" | "barrier" | "contract" | "ledger" | "heartbeat" | "junction" | "yield" | "arbitrage" | "risk" | "rebalance";
+  size?: number;
+}
+
+const { symbol, size = 56 } = Astro.props;
+---
+
+<svg class="agent-glyph" width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  <use href={`/assets/pixel/sprite-atlas.svg#${symbol}`} />
+</svg>

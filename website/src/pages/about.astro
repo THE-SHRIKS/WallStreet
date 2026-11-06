@@ -1,0 +1,46 @@
+---
+import DitherArt from "../components/DitherArt.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import SourceLink from "../components/SourceLink.astro";
+import StatusLabel from "../components/StatusLabel.astro";
+import { PROJECT_FACTS, REPOSITORY_URL } from "../data/project-facts";
+
+const projectStage = PROJECT_FACTS.find((fact) => fact.label === "Project stage");
+const licenseStatus = PROJECT_FACTS.find((fact) => fact.label === "License status");
+---
+
+<BaseLayout title="About" description="A source-led introduction to the Wall Street project and its current development boundaries." active="about">
+  <section class="about-page wrap" aria-labelledby="about-title">
+    <DitherArt class="intro-art" variant="globe" label="Decorative dithered globe." cell={4} />
+    <Breadcrumbs items={[{ label: "About" }]} />
+    <div class="about-page__intro">
+      <p class="eyebrow">About the project</p>
+      <h1 id="about-title">A work in progress, shown as it is.</h1>
+      <p class="about-page__lead">Wall Street is a project of THE SHRIKS exploring agent-driven financial software and the engineering systems around it. The public <strong>THE-SHRIKS/WallStreet</strong> repository contains an in-development app, service prototypes, a Python workflow, and Solidity contract sources; this site makes those boundaries easier to inspect.</p>
+    </div>
+
+    <div class="about-ledger">
+      <article>
+        <p class="eyebrow">Current description</p>
+        <div class="about-ledger__fact"><StatusLabel status={projectStage?.status ?? "Not verified"} /><p>{projectStage?.statement}</p><SourceLink path="README.md" /></div>
+      </article>
+      <article>
+        <p class="eyebrow">Licence status</p>
+        <div class="about-ledger__fact"><StatusLabel status="Not verified" /><p>{licenseStatus?.statement}</p><SourceLink path="LokiAi/package.json" /><SourceLink path="loki-contracts/package.json" /></div>
+      </article>
+      <article>
+        <p class="eyebrow">What this site is for</p>
+        <p>It explains the code that is present, the maturity of each part, and the evidence that would be needed before making stronger claims. It is not a trading product, an investment recommendation, or a security audit.</p>
+      </article>
+    </div>
+
+    <div class="about-page__closing">
+      <p>The source is publicly visible and the project intends to develop in the open, but repository-wide licensing is not confirmed. There is no verified production domain, audited release, or deployed-contract address presented here. Source links point to the reviewed commit; GitHub actions open the current repository.</p>
+      <div class="button-row">
+        <a class="button button--dark" href={REPOSITORY_URL} target="_blank" rel="noreferrer">Open the repository <span aria-hidden="true">↗</span></a>
+        <a class="button button--outline-dark" href="/engineering">Read the engineering map</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,205 @@
+---
+import DitherArt from "../components/DitherArt.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ArchitectureDiagram from "../components/ArchitectureDiagram.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import SourceLink from "../components/SourceLink.astro";
+import StatusLabel from "../components/StatusLabel.astro";
+import { CODE_MAP, CONTRACTS } from "../data/engineering";
+import { AUDIT_COMMIT, AUDIT_DATE, PROJECT_FACTS, REPOSITORY_URL } from "../data/project-facts";
+
+const maturityLabels = new Set([
+  "Browser application",
+  "API service",
+  "Database and persistence",
+  "Portfolio workflow",
+  "Solidity contracts",
+  "Deployment status",
+]);
+const maturityFacts = PROJECT_FACTS.filter((fact) => maturityLabels.has(fact.label));
+---
+
+<BaseLayout title="Engineering" description="An interactive, source-pinned map of the Wall Street repository, including independent app, API, Python, contract, and research modules." active="engineering">
+  <section class="page-intro wrap" aria-labelledby="engineering-title">
+    <DitherArt class="intro-art" variant="ring" label="Decorative dithered ringed planet." cell={4} />
+    <Breadcrumbs items={[{ label: "Engineering" }]} />
+    <div class="page-intro__copy">
+      <p class="eyebrow">Engineering · source map</p>
+      <h1 id="engineering-title">Related code. Unverified deployment.</h1>
+      <p>This page maps the repository as reviewed on {AUDIT_DATE}. It distinguishes adjacent packages, mock paths, and research folders instead of implying one connected production pipeline.</p>
+    </div>
+    <div class="audit-stamp"><span>Reviewed commit</span><code>{AUDIT_COMMIT}</code><a href={`${REPOSITORY_URL}/commit/${AUDIT_COMMIT}`} target="_blank" rel="noreferrer">Open commit ↗</a></div>
+  </section>
+
+  <section class="engineering-map-section section wrap" id="architecture" aria-labelledby="architecture-title">
+    <div class="section-heading section-heading--split">
+      <div><p class="eyebrow">Source-level relationships</p><h2 id="architecture-title">One repo, several boundaries.</h2></div>
+      <p>The diagram is a navigable source map. Its key distinguishes unverified relationships from a simulated path.</p>
+    </div>
+    <ArchitectureDiagram />
+  </section>
+
+  <section class="data-flows section section--paper" id="data-flows" aria-labelledby="data-flows-title">
+    <div class="wrap">
+      <div class="section-heading section-heading--split">
+        <div><p class="eyebrow">Three source paths</p><h2 id="data-flows-title">Trace the code. Stop at the boundary.</h2></div>
+        <p>These are useful ways to read the source, not evidence that a live service is running.</p>
+      </div>
+      <div class="flow-stories">
+        <article class="flow-story">
+          <div class="flow-story__index">A</div>
+          <div class="flow-story__body">
+            <h3>From interface to an agent-shaped result</h3>
+            <ol class="flow-steps">
+              <li><span>1</span><div><strong>React/Vite views</strong><p>The browser app presents portfolio and agent surfaces. Some displayed states are seeded or simulated.</p><SourceLink path="LokiAi/src/App.tsx" /></div></li>
+              <li><span>2</span><div><strong>Service and orchestration code</strong><p>The repository contains an agent orchestrator and distinct backend agent modules.</p><SourceLink path="LokiAi/src/services/agents/agent-orchestrator.ts" /></div></li>
+              <li><span>3</span><div><strong>Data and runtime boundary</strong><p>Separate API, database, event, and model packages appear in the tree; this review did not verify one end-to-end deployment.</p><SourceLink path="LokiAi/backend/server.js" /></div></li>
+            </ol>
+            <p class="flow-story__boundary"><StatusLabel status="Not verified" compact /> A rendered result is not a source of live financial state.</p>
+          </div>
+        </article>
+
+        <article class="flow-story">
+          <div class="flow-story__index">B</div>
+          <div class="flow-story__body">
+            <h3>From a rebalance proposal to an execution boundary</h3>
+            <ol class="flow-steps">
+              <li><span>1</span><div><strong>Allocation comparison</strong><p>The Python engine calculates deviations and proposes a rebalancing shape.</p><SourceLink path="portfolio_rebalancer/rebalance_engine.py" /></div></li>
+              <li><span>2</span><div><strong>Simulated trade path</strong><p>The implementation explicitly describes its trade execution as simulated.</p><StatusLabel status="Simulated" compact /></div></li>
+              <li><span>3</span><div><strong>Contract prototypes</strong><p>Solidity files describe related interfaces and state transitions, but no deployed address or settled transaction is asserted.</p><SourceLink path="loki-contracts/contracts/PortfolioRebalancer.sol" /></div></li>
+            </ol>
+            <p class="flow-story__boundary"><StatusLabel status="Simulated" compact /> A proposed allocation is not a signed order, bridge receipt, or transaction.</p>
+          </div>
+        </article>
+
+        <article class="flow-story">
+          <div class="flow-story__index">C</div>
+          <div class="flow-story__body">
+            <h3>From displayed state to an update boundary</h3>
+            <ol class="flow-steps">
+              <li><span>1</span><div><strong>Browser views</strong><p>Dashboard and cross-chain screens render application state; some repository views also import a mock-data module.</p><SourceLink path="LokiAi/src/pages/CrossChain.tsx" /><SourceLink path="LokiAi/src/data/mockData.ts" /></div></li>
+              <li><span>2</span><div><strong>Server-side event setup</strong><p>The separate Node server configures Socket.IO alongside HTTP routes.</p><SourceLink path="LokiAi/backend/server.js" /></div></li>
+              <li><span>3</span><div><strong>Connection remains unverified</strong><p>This review did not establish that the displayed page receives a live event subscription or market feed.</p></div></li>
+            </ol>
+            <p class="flow-story__boundary"><StatusLabel status="Not verified" compact /> A rendered update is not proof of a live source or settled transaction.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="engineering-infrastructure section section--paper" id="infrastructure" aria-labelledby="infrastructure-title">
+    <div class="wrap">
+      <div class="section-heading section-heading--split">
+        <div><p class="eyebrow">Infrastructure and runtimes</p><h2 id="infrastructure-title">Different packages. Different assumptions.</h2></div>
+        <p>Compose files, reverse-proxy configs, and service manifests describe alternatives. This review did not verify one all-in-one production topology.</p>
+      </div>
+      <div class="infrastructure-register">
+        <article class="infrastructure-row">
+          <span class="infrastructure-row__index">01</span>
+          <div class="infrastructure-row__copy"><p class="eyebrow">Persistence and events</p><h3>Separate backend boundaries</h3><p>MongoDB-oriented service and model files sit alongside Socket.IO server setup. Neither presence establishes an external database connection or a deployed event feed.</p></div>
+          <div class="infrastructure-row__sources"><SourceLink path="LokiAi/src/services/database/mongodb-service.ts" /><SourceLink path="LokiAi/backend/server.js" /></div>
+        </article>
+        <article class="infrastructure-row">
+          <span class="infrastructure-row__index">02</span>
+          <div class="infrastructure-row__copy"><p class="eyebrow">Python and task processing</p><h3>Independent worker-facing paths</h3><p>The rebalancer and FastAPI/Celery gateway have separate source and runtime requirements. A connected broker, worker, or end-to-end task path was not verified.</p></div>
+          <div class="infrastructure-row__sources"><SourceLink path="portfolio_rebalancer/rebalance_engine.py" /><SourceLink path="task_gateway/app.py" /></div>
+        </article>
+        <article class="infrastructure-row">
+          <span class="infrastructure-row__index">03</span>
+          <div class="infrastructure-row__copy"><p class="eyebrow">Compose and reverse proxy</p><h3>Variants are not a canonical launch recipe</h3><p>Compose variants group different service sets, while NGINX files hold alternate serving and routing rules. Multiple root and LokiAi variants exist; none is a verified canonical startup recipe. Choose a package intentionally and verify its environment; this website starts none of them.</p></div>
+          <div class="infrastructure-row__sources"><SourceLink path="LokiAi/docker-compose.simple.yml" /><SourceLink path="LokiAi/docker-compose.yml" /><SourceLink path="LokiAi/nginx.conf" /></div>
+        </article>
+        <article class="infrastructure-row">
+          <span class="infrastructure-row__index">04</span>
+          <div class="infrastructure-row__copy"><p class="eyebrow">Contract tooling</p><h3>Local tooling, not a deployment record</h3><p>The package declares Hardhat and Ethers with local compile, test, and deployment scripts. This site build does not run them, and their presence does not verify a chain address or release.</p></div>
+          <div class="infrastructure-row__sources"><SourceLink path="loki-contracts/package.json" /><SourceLink path="loki-contracts/hardhat.config.js" /></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="contract-register section wrap" id="contracts" aria-labelledby="contracts-title">
+    <div class="section-heading">
+      <p class="eyebrow">Solidity · four source files</p>
+      <h2 id="contracts-title">Contract surfaces, with the mock paths left visible.</h2>
+      <p>Names below come from the repository. A local compile or passing unit test would not replace a security audit or establish a live deployment.</p>
+    </div>
+    <div class="contract-register__list">
+      {CONTRACTS.map((contract, index) => (
+        <article class="contract-row">
+          <span class="contract-row__index">0{index + 1}</span>
+          <div>
+            <h3>{contract.name}</h3>
+            <p>{contract.purpose}</p>
+            <dl class="contract-row__details">
+              <div><dt>Inputs</dt><dd>{contract.inputs}</dd></div>
+              <div><dt>State and events</dt><dd>{contract.stateAndEvents}</dd></div>
+            </dl>
+            <p class="contract-row__boundary">{contract.boundary}</p>
+          </div>
+          <SourceLink path={contract.path} />
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="code-map section section--ink" aria-labelledby="code-map-title">
+    <div class="wrap">
+      <div class="section-heading section-heading--split">
+        <div><p class="eyebrow">Commit-pinned code map</p><h2 id="code-map-title">Open the file behind the claim.</h2></div>
+        <p>Every source link points to the reviewed snapshot. The repository link in the global navigation follows the latest default branch.</p>
+      </div>
+      <ul class="code-map__list">
+        {CODE_MAP.map((entry, index) => (
+          <li><span>0{index + 1}</span><SourceLink path={entry.path} label={entry.label} kind={entry.kind} /></li>
+        ))}
+      </ul>
+      <div class="code-map__footer">
+        <p>Reviewed on {AUDIT_DATE} · <code>{AUDIT_COMMIT.slice(0, 7)}</code></p>
+        <a class="button button--outline" href={REPOSITORY_URL} target="_blank" rel="noreferrer">Open latest repository <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="maturity-register section section--paper" id="maturity" aria-labelledby="maturity-title">
+    <div class="wrap">
+      <div class="section-heading section-heading--split">
+        <div><p class="eyebrow">Evidence register</p><h2 id="maturity-title">What this snapshot establishes—and what it does not.</h2></div>
+        <p>Every state below is a source-level description pinned to the reviewed commit, not an operational service check.</p>
+      </div>
+      <div class="maturity-table-wrap" role="region" aria-label="Technical maturity register" tabindex="0">
+        <table class="maturity-table">
+          <caption>Source review {AUDIT_COMMIT.slice(0, 7)} · {AUDIT_DATE}</caption>
+          <thead>
+            <tr><th scope="col">Area</th><th scope="col">Status</th><th scope="col">Evidence boundary</th><th scope="col">Source</th></tr>
+          </thead>
+          <tbody>
+            {maturityFacts.map((fact) => (
+              <tr>
+                <th scope="row">{fact.label}</th>
+                <td><StatusLabel status={fact.status} compact /></td>
+                <td>{fact.statement}</td>
+                <td>{fact.sourcePaths.slice(0, 1).map((path) => <SourceLink path={path} />)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="engineering-trust section section--ink" aria-labelledby="engineering-trust-title">
+    <div class="wrap engineering-trust__inner">
+      <div>
+        <p class="eyebrow">Security and trust</p>
+        <h2 id="engineering-trust-title">Intent is not enforcement.</h2>
+        <p>Wallet, risk, and contract modules are engineering surfaces—not independently audited or verified production controls. This website excludes credential values and private configuration. Maintainers should review sensitive materials privately before a public release.</p>
+      </div>
+      <div class="engineering-trust__actions">
+        <a class="button button--light" href="/docs/security-and-limitations">Read security boundaries</a>
+        <a class="button button--outline" href="/contact">Reporting channels</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

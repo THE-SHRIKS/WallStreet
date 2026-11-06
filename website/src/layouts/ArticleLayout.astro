@@ -1,0 +1,89 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CodeEnhancer from "../components/CodeEnhancer.astro";
+import SourceLink from "../components/SourceLink.astro";
+import { AUDIT_COMMIT } from "../data/project-facts";
+
+interface TocItem {
+  id: string;
+  label: string;
+}
+
+interface ArticleLink {
+  slug: string;
+  title: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  tags: string[];
+  motif: "network" | "threshold" | "ledger";
+  toc: TocItem[];
+  previous: ArticleLink | undefined;
+  next: ArticleLink | undefined;
+}
+
+const { title, description, category, tags, toc, previous, next } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} type="article" active="articles">
+  <div class="article-shell wrap">
+    <Breadcrumbs items={[{ label: "Articles", href: "/articles" }, { label: title }]} />
+
+    <header class="article-header">
+      <div class="article-header__copy">
+        <p class="eyebrow">{category} · Undated project note</p>
+        <h1>{title}</h1>
+        <p class="article-header__description">{description}</p>
+        <div class="article-header__tags" aria-label="Article topics">
+          {tags.map((tag) => <span>{tag}</span>)}
+        </div>
+      </div>
+    </header>
+
+    <div class="article-layout">
+      <article class="prose article-body">
+        <p class="article-body__source-note">Source reviewed at <code>{AUDIT_COMMIT.slice(0, 7)}</code>. No publication date has been assigned.</p>
+        <div class="prose__body">
+          <slot />
+        </div>
+        <footer class="article-body__footer">
+          <h2>Keep the boundary visible</h2>
+          <p>Read the source before relying on a behavior. This article describes a code snapshot, not investment advice or a security review.</p>
+          <SourceLink path="README.md" label="Open the project source" />
+        </footer>
+      </article>
+
+      {toc.length > 0 && (
+        <aside class="toc-rail" aria-label="On this page">
+          <p class="toc-rail__title">On this page</p>
+          <nav aria-label="Article sections">
+            <ol>
+              {toc.map((item) => <li><a href={`#${item.id}`}>{item.label}</a></li>)}
+            </ol>
+          </nav>
+          <a class="toc-rail__back" href="/articles">← All articles</a>
+        </aside>
+      )}
+    </div>
+
+    <nav class="article-pagination" aria-label="Adjacent articles">
+      {previous && (
+        <a class="article-pagination__link article-pagination__link--previous" href={`/articles/${previous.slug}`}>
+          <span class="article-pagination__label">Previous note</span>
+          <span class="article-pagination__title">{previous.title}</span>
+        </a>
+      )}
+      {next && (
+        <a class="article-pagination__link article-pagination__link--next" href={`/articles/${next.slug}`}>
+          <span class="article-pagination__label">Next note</span>
+          <span class="article-pagination__title">{next.title}</span>
+        </a>
+      )}
+    </nav>
+  </div>
+  <CodeEnhancer />
+</BaseLayout>

@@ -1,0 +1,37 @@
+---
+interface DocItem {
+  slug: string;
+  navLabel: string;
+}
+
+interface Props {
+  items: DocItem[];
+  activeSlug?: string | undefined;
+}
+
+const { items, activeSlug } = Astro.props;
+---
+
+<nav class="docs-nav docs-nav--desktop" aria-label="Documentation sections">
+  <p class="docs-nav__title">Documentation</p>
+  <ol>
+    <li><a href="/docs" aria-current={activeSlug === undefined ? "page" : undefined}>Overview</a></li>
+    {items.map((item) => (
+      <li>
+        <a href={`/docs/${item.slug}`} aria-current={activeSlug === item.slug ? "page" : undefined}>{item.navLabel}</a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<details class="docs-nav docs-nav--mobile">
+  <summary>Browse documentation</summary>
+  <nav aria-label="Documentation sections">
+    <ol>
+      <li><a href="/docs" aria-current={activeSlug === undefined ? "page" : undefined}>Overview</a></li>
+      {items.map((item) => (
+        <li><a href={`/docs/${item.slug}`} aria-current={activeSlug === item.slug ? "page" : undefined}>{item.navLabel}</a></li>
+      ))}
+    </ol>
+  </nav>
+</details>

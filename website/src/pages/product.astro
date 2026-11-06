@@ -1,0 +1,211 @@
+---
+import DitherArt from "../components/DitherArt.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AgentGlyph from "../components/AgentGlyph.astro";
+import ProcessStrip from "../components/ProcessStrip.astro";
+import SourceLink from "../components/SourceLink.astro";
+import StatusLabel from "../components/StatusLabel.astro";
+import { REPOSITORY_URL } from "../data/project-facts";
+
+const pathSteps = [
+  { label: "Inputs", href: "/engineering#data-flows" },
+  { label: "Candidate model", href: "#yield-optimizer" },
+  { label: "Risk markers", href: "#risk-manager" },
+  { label: "Contract boundary", href: "/engineering#contracts" },
+  { label: "Observed state", href: "/engineering#architecture" },
+];
+---
+
+<BaseLayout title="Product" description="A source-led look at four prototype roles in the Wall Street repository: yield, arbitrage, risk, and portfolio rebalancing." active="product">
+  <section class="page-intro wrap" aria-labelledby="product-title">
+    <DitherArt class="intro-art" variant="ship" label="Decorative dithered saucer. Not a product screenshot." cell={4} />
+    <div class="page-intro__copy">
+      <p class="eyebrow">Product notes · reviewed source</p>
+      <h1 id="product-title">Four roles. Different levels of proof.</h1>
+      <p>The repository explores yield selection, arbitrage, risk thresholds, and portfolio rebalancing. The page below uses only schematic examples: it does not fetch a market, read a wallet, or submit a transaction.</p>
+    </div>
+    <div class="page-intro__stamp"><span>Scope</span><strong>Source snapshot</strong><span>Not a live financial service</span></div>
+  </section>
+
+  <section class="product-path wrap" aria-labelledby="product-path-title">
+    <h2 id="product-path-title" class="sr-only">Illustrative decision path</h2>
+    <ProcessStrip steps={pathSteps} label="Illustrative decision path" />
+    <p class="product-path__caption">One explanatory path across several independent prototypes. It does not imply end-to-end deployment.</p>
+  </section>
+
+  <div class="product-chapters" id="main-product-content">
+    <section class="product-chapter product-chapter--yield" id="yield-optimizer" aria-labelledby="yield-title">
+      <div class="wrap product-chapter__inner">
+        <header class="product-chapter__header">
+          <p class="eyebrow">01 / Candidate selection</p>
+          <div class="product-chapter__title"><AgentGlyph symbol="yield" size={54} /><h2 id="yield-title">Yield optimizer</h2><StatusLabel status="Prototype" /></div>
+          <p>Strategy selection appears in the Node service and a Solidity contract prototype. The original code explores protocol, asset, reported yield, and risk fields; this website does not invent a current APY or rank real offers.</p>
+        </header>
+
+        <div class="product-chapter__body">
+          <div class="yield-visual" role="group" aria-labelledby="yield-visual-title">
+            <div class="visual-caption"><span>Illustrative comparison</span><span>No live offer data</span></div>
+            <h3 id="yield-visual-title">Candidate fields, without a rate</h3>
+            <div class="yield-rows" aria-hidden="true">
+              <div class="yield-row"><span>Candidate A</span><span class="yield-row__bar yield-row__bar--a"></span><span class="yield-row__mark">Risk field</span></div>
+              <div class="yield-row"><span>Candidate B</span><span class="yield-row__bar yield-row__bar--b"></span><span class="yield-row__mark">Protocol field</span></div>
+              <div class="yield-row"><span>Candidate C</span><span class="yield-row__bar yield-row__bar--c"></span><span class="yield-row__mark">Asset field</span></div>
+            </div>
+            <div class="yield-candidates" aria-label="Select an illustrative candidate">
+              <button type="button" data-yield-candidate="Candidate A" aria-pressed="true">A</button>
+              <button type="button" data-yield-candidate="Candidate B" aria-pressed="false">B</button>
+              <button type="button" data-yield-candidate="Candidate C" aria-pressed="false">C</button>
+            </div>
+            <p class="interactive-status" data-yield-status aria-live="polite">Candidate A selected. This is a conceptual candidate, not a current protocol offer or yield figure.</p>
+          </div>
+          <div class="product-chapter__explanation">
+            <div><h3>What the source contains</h3><p>A yield-optimizer service, a contract interface, and strategy-shaped data.</p><SourceLink path="LokiAi/backend/services/agents/yield-optimizer-agent.js" /><SourceLink path="loki-contracts/contracts/YieldOptimizer.sol" /></div>
+            <div><h3>What it does not prove</h3><p>That a protocol is reachable, that a quote is current, that an APY is realized, or that a transaction succeeded.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-chapter product-chapter--arbitrage" id="arbitrage-bot" aria-labelledby="arbitrage-title">
+      <div class="wrap product-chapter__inner">
+        <header class="product-chapter__header">
+          <p class="eyebrow">02 / Route comparison</p>
+          <div class="product-chapter__title"><AgentGlyph symbol="arbitrage" size={54} /><h2 id="arbitrage-title">Arbitrage bot</h2><StatusLabel status="Simulated" /></div>
+          <p>The browser-side model describes two route legs and an execution boundary. Its simulated result is not a live price, executable quote, or evidence of net profitability after fees and slippage.</p>
+        </header>
+
+        <div class="product-chapter__body product-chapter__body--reverse">
+          <div class="route-visual" data-route-view="paired" role="group" aria-labelledby="route-visual-title">
+            <div class="visual-caption"><span>Schematic path</span><span>Illustrative only</span></div>
+            <h3 id="route-visual-title">Compare the route shape</h3>
+            <div class="route-branches" aria-hidden="true">
+              <div class="route-branch route-branch--one"><span>Market A</span><i></i><span>Pool X</span><i></i><span>Market B</span></div>
+              <div class="route-branch route-branch--two"><span>Market A</span><i></i><span>Pool Y</span><i></i><span>Market B</span></div>
+              <div class="route-difference"><span>Difference check</span><AgentGlyph symbol="junction" size={28} /></div>
+            </div>
+            <button class="text-button" type="button" data-route-toggle aria-pressed="false">Inspect the difference</button>
+            <p class="interactive-status" data-route-status aria-live="polite">Two schematic routes. The drawing contains no live prices or execution proof.</p>
+          </div>
+          <div class="product-chapter__explanation">
+            <div><h3>What the source contains</h3><p>An arbitrage model and a Solidity contract file with mock-oriented execution paths.</p><SourceLink path="LokiAi/src/services/ml-models/arbitrage-bot-model.ts" /><SourceLink path="loki-contracts/contracts/ArbitrageBot.sol" /></div>
+            <div><h3>What remains unverified</h3><p>External liquidity, block inclusion, fees, slippage, front-running resistance, and a settled transaction.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-chapter product-chapter--risk" id="risk-manager" aria-labelledby="risk-title">
+      <div class="wrap product-chapter__inner">
+        <header class="product-chapter__header">
+          <p class="eyebrow">03 / Threshold review</p>
+          <div class="product-chapter__title"><AgentGlyph symbol="barrier" size={54} /><h2 id="risk-title">Risk manager</h2><StatusLabel status="Prototype" /></div>
+          <p>The current contract source defines score markers at 700 and 900. The control is a local teaching aid that lets you inspect those constants; it does not evaluate an account or enforce a safety boundary.</p>
+        </header>
+
+        <div class="product-chapter__body">
+          <div class="risk-visual" role="group" aria-labelledby="risk-visual-title">
+            <div class="visual-caption"><span>Illustrative sample only</span><span>RiskManager.sol source constants</span></div>
+            <h3 id="risk-visual-title">Move a sample across the markers</h3>
+            <div class="risk-scale" aria-label="Source threshold reference">
+              <span class="risk-scale__start">0</span>
+              <span class="risk-scale__marker risk-scale__marker--warning">700 · warning marker</span>
+              <span class="risk-scale__marker risk-scale__marker--upper">900 · upper marker</span>
+              <span class="risk-scale__end">1000</span>
+            </div>
+            <label class="range-label" for="risk-sample">Illustrative score <output id="risk-value" for="risk-sample" data-risk-output>640 / 1000</output></label>
+            <input id="risk-sample" type="range" min="0" max="1000" step="10" value="640" data-risk-slider aria-describedby="risk-explainer">
+            <p class="interactive-status" id="risk-explainer" data-risk-state aria-live="polite">Illustrative value 640 / 1000: below the source warning marker. No wallet data is read and no action occurs.</p>
+          </div>
+          <div class="product-chapter__explanation">
+            <div><h3>What the source contains</h3><p>A Solidity module with threshold-oriented score and state logic.</p><SourceLink path="loki-contracts/contracts/RiskManager.sol" /></div>
+            <div><h3>What a threshold cannot establish</h3><p>Model validity, oracle quality, coverage of every risk, or a guarantee that loss can be prevented. It is not an audit.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-chapter product-chapter--rebalance" id="portfolio-rebalancer" aria-labelledby="rebalance-title">
+      <div class="wrap product-chapter__inner">
+        <header class="product-chapter__header">
+          <p class="eyebrow">04 / Allocation shape</p>
+          <div class="product-chapter__title"><AgentGlyph symbol="rebalance" size={54} /><h2 id="rebalance-title">Portfolio rebalancer</h2><StatusLabel status="Simulated" /></div>
+          <p>The Python workflow compares current and target allocation maps, then uses a simulated execution path. This graphic is a pattern comparison only: no wallet, balances, token amounts, or orders are involved.</p>
+        </header>
+
+        <div class="product-chapter__body product-chapter__body--reverse">
+          <div class="allocation-visual" data-allocation-view="observed" role="group" aria-labelledby="allocation-visual-title">
+            <div class="visual-caption"><span>Allocation pattern</span><span>No account data</span></div>
+            <h3 id="allocation-visual-title">A proposal is not a transfer</h3>
+            <div class="allocation-panels" aria-hidden="true">
+              <div class="allocation-panel allocation-panel--observed"><span>Observed shape</span><div class="allocation-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+              <div class="allocation-panel allocation-panel--target"><span>Illustrative target</span><div class="allocation-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+            </div>
+            <button class="text-button" type="button" data-allocation-toggle aria-pressed="false">Show illustrative target</button>
+            <p class="interactive-status" data-allocation-status aria-live="polite">Schematic observed pattern shown. It is not connected to a wallet or live portfolio.</p>
+          </div>
+          <div class="product-chapter__explanation">
+            <div><h3>What the source contains</h3><p>A Python engine for allocation deviation and candidate rebalance recommendations, plus a contract prototype.</p><SourceLink path="portfolio_rebalancer/rebalance_engine.py" /><SourceLink path="loki-contracts/contracts/PortfolioRebalancer.sol" /></div>
+            <div><h3>What is not represented here</h3><p>A signed order, bridge transfer, live balance, tax outcome, or suitability recommendation.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="product-support section" aria-labelledby="product-support-title">
+    <div class="wrap">
+      <header class="product-support__heading">
+        <p class="eyebrow">Wallet and network context</p>
+        <h2 id="product-support-title">The four roles sit among other unfinished boundaries.</h2>
+        <p>These neighboring modules matter to the system story, but their presence does not imply a complete, connected financial product.</p>
+      </header>
+
+      <div class="product-support__list">
+        <article class="product-support__item" id="wallet-identity">
+          <div class="product-support__icon"><AgentGlyph symbol="junction" size={52} /></div>
+          <div class="product-support__body">
+            <p class="eyebrow">Wallet boundary</p>
+            <h3>Wallet</h3>
+            <p>A wallet page and MetaMask hooks appear in the React source. These files do not establish a production signing flow or independent review.</p>
+            <p class="product-support__note">This website does not connect a wallet or request a signature.</p>
+            <div class="source-list">
+              <SourceLink path="LokiAi/src/pages/Wallets.tsx" />
+              <SourceLink path="LokiAi/src/hooks/useMetaMask.ts" />
+            </div>
+          </div>
+        </article>
+
+        <article class="product-support__item" id="network-connections">
+          <div class="product-support__icon"><AgentGlyph symbol="relay" size={52} /></div>
+          <div class="product-support__body">
+            <p class="eyebrow">Provider boundary</p>
+            <h3>Network connections</h3>
+            <p>The source includes a testnet-integration helper, a smart-contract service, and a cross-chain screen. The screen&apos;s completion state is simulated; configuration and client code do not prove that a provider, RPC, contract, or network is currently reachable.</p>
+            <p class="product-support__note">No network call or transaction is made by this page.</p>
+            <div class="source-list">
+              <SourceLink path="LokiAi/src/services/testnet-integration.ts" />
+              <SourceLink path="LokiAi/src/services/blockchain/smart-contracts.ts" />
+              <SourceLink path="LokiAi/src/pages/CrossChain.tsx" />
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="product-boundaries section section--ink" aria-labelledby="product-boundaries-title">
+    <div class="wrap product-boundaries__inner">
+      <div>
+        <p class="eyebrow">Trust boundary</p>
+        <h2 id="product-boundaries-title">A prototype label is part of the product.</h2>
+        <p>Do not treat this website or repository as an offer, recommendation, performance record, audited security system, or production-ready financial service.</p>
+      </div>
+      <div class="product-boundaries__links">
+        <a class="button button--light" href="/docs/security-and-limitations">Security &amp; limitations</a>
+        <a class="button button--outline" href={REPOSITORY_URL} target="_blank" rel="noreferrer">Inspect the source <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <script src="../scripts/product-interactions.ts"></script>
+</BaseLayout>
